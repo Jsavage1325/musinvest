@@ -1,12 +1,26 @@
 const MusicInvestToken = artifacts.require("MusicInvestToken");
+const SpotifyToken = artifacts.require("SpotifyToken");
 
 
 module.exports = async function (deployer) {
+    // first addr 0x1E9b2AAf45F753995001d22524313C3b1d80819f
+    // second addr 0xD1391CC98414e65802D4593d45913B73Db71f262
+    var brainContractAddress = "0xFdF7d86d437cDa40a6b06e4AE3E8Db703A5dcd41";
+    var BrainContract = new web3.eth.Contract(MusicInvestToken.abi, brainContractAddress);
 
-    var TestContract = new web3.eth.Contract(MusicInvestToken.abi, '0x1E9b2AAf45F753995001d22524313C3b1d80819f');
+    var myAddress = "0xC3086402039e344140f711dC7AFa259ca362f0bb";
+    var samsAddress = "0xD245Fbe9F1F7cf8944528bA1CeD277272f0da061"
 
-    // await TestContract.methods.issue(
-    //     "0xD245Fbe9F1F7cf8944528bA1CeD277272f0da061", 10).send({ from: '0xC3086402039e344140f711dC7AFa259ca362f0bb' })
+
+    var supertokenaddress = "0xB806966A6078ac78c789665c177DFDacfd544E71";
+    var supertokencontract = new web3.eth.Contract(SpotifyToken.abi, supertokenaddress);
+
+    var erc20ContractAddress = "0xaBc5aCAa793079153d135F2a7b56dfbF8520807D";
+    var ERC20CashContract = new web3.eth.Contract(SpotifyToken.abi, erc20ContractAddress);
+
+    
+    // await BrainContract.methods.issue(
+    //     samsAddress, 1000000000).send({ from: myAddress })
     //     .on("receipt", function (err, transactionHash) {
     //         if (err) {
     //             console.log(err);
@@ -15,15 +29,86 @@ module.exports = async function (deployer) {
     //         }
     //     });
 
-    await TestContract.methods.distribute(
-        100).send({ from: '0xC3086402039e344140f711dC7AFa259ca362f0bb' })
-        .on("receipt", function (err, transactionHash) {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log(transactionHash);
-            }
-        });
+
+    // await ERC20CashContract.methods.mint(
+    //     "10000000000000000000000000000").send({ from: myAddress })
+    //     .on("receipt", function (err, transactionHash) {
+    //         if (err) {
+    //             console.log(err);
+    //         } else {
+    //             console.log(transactionHash);
+    //         }
+    //     });
+
+    
+
+
+    // await supertokencontract.methods.approve(
+    //     brainContractAddress, "2500000000000000000000000000").send({ from: myAddress })
+    //     .on("receipt", function (err, transactionHash) {
+    //         if (err) {
+    //             console.log(err);
+    //         } else {
+    //             console.log(transactionHash);
+    //         }
+    //     });
+
+    // await BrainContract.methods.distribute(
+    //     "1250000000000000000000").send({ from: myAddress })
+    //     .on("receipt", function (err, transactionHash) {
+    //         if (err) {
+    //             console.log(err);
+    //         } else {
+    //             console.log(transactionHash);
+    //         }
+    //     });
+
+
+    // await BrainContract.methods.test(
+    // "1250000000000000000").call({ from: myAddress })
+    // .on("receipt", function (err, transactionHash) {
+    //     if (err) {
+    //         console.log(err);
+    //     } else {
+    //         console.log(transactionHash);
+    //     }
+    // });
+
+    // console.log("test done");
+
+    // // await BrainContract.methods.test1().send({ from: myAddress })
+    // //     .on("receipt", function (err, transactionHash) {
+    // //         if (err) {
+    // //             console.log(err);
+    // //         } else {
+    // //             console.log(transactionHash);
+    // //         }
+    // //     });
+
+    // console.log("test1 done");
+
+
+    // await BrainContract.methods.test2().send({ from: myAddress })
+    //     .on("receipt", function (err, transactionHash) {
+    //         if (err) {
+    //             console.log(err);
+    //         } else {
+    //             console.log(transactionHash);
+    //         }
+    //     });
+
+    // console.log("test2 done");
+    
+    // await BrainContract.methods.test3().send({ from: myAddress })
+    //     .on("receipt", function (err, transactionHash) {
+    //         if (err) {
+    //             console.log(err);
+    //         } else {
+    //             console.log(transactionHash);
+    //         }
+    //     });
+
+
 
     // web3.eth.sendTransaction({data: code}, function(err, transactionHash) {
     //     if (!err)

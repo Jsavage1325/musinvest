@@ -3,7 +3,6 @@ const { setWeb3Provider } = require("@decentral.ee/web3-helpers/src/config");
 const SuperfluidSDK = require("@superfluid-finance/js-sdk");
 const MusicInvestToken = artifacts.require("MusicInvestToken");
 const { Web3Provider } = require("@ethersproject/providers");
-var Web3 = require('web3');
 
 module.exports = async function(deployer) {
 
