@@ -12,11 +12,7 @@ import {
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-
-contract MusicInvestToken is
-    Ownable,
-    ERC20
-{
+contract MusicInvestToken is Ownable, ERC20 {
 
     // Address for the uma oracle contract
     address umaOracle = 0xB1d3A89333BBC3F5e98A991d6d4C1910802986BC;
@@ -29,7 +25,7 @@ contract MusicInvestToken is
     IInstantDistributionAgreementV1 private _ida;
 
     // use callbacks to track approved subscriptions
-    mapping (address => bool) public isSubscribing;
+    mapping(address => bool) public isSubscribing;
 
     constructor(
         string memory name,
@@ -37,10 +33,9 @@ contract MusicInvestToken is
         ISuperToken cashToken,
         ISuperfluid host,
         IInstantDistributionAgreementV1 ida
-        )
-        
-    ERC20(name, symbol)
-    {
+    )
+
+    ERC20(name, symbol) {
         _cashToken = cashToken;
         _host = host;
         _ida = ida;
@@ -70,7 +65,7 @@ contract MusicInvestToken is
 
         _host.callAgreement(
             _ida,
-            abi.encodeWithSelector(
+            abi.encodeWithSelector_cashToken(
                 _ida.updateSubscription.selector,
                 _cashToken,
                 INDEX_ID,
@@ -84,43 +79,113 @@ contract MusicInvestToken is
 
     /// @dev Distribute `amount` of cash among all token holders
     function distribute(uint256 cashAmount) external onlyOwner {
-        // here we want to send a request to the oracle
+        /* // here we want to send a request to the oracle
         bytes32 thing = "true";
     
         (bool success, bytes memory data) =  umaOracle.call(abi.encodeWithSignature("requestPrice(bytes32,uint256)", thing, block.timestamp));
 
-        if (success) {
-            // decode the data
-            // uint256 price = abi.decode(data, uint256);
-
-
-            (uint256 actualCashAmount,) = _ida.calculateDistribution(
-            _cashToken,
-            address(this), INDEX_ID,
-            cashAmount);
-
-            _cashToken.transferFrom(owner(), address(this), actualCashAmount);
-
-            _host.callAgreement(
-                _ida,
-                abi.encodeWithSelector(
-                    _ida.distribute.selector,
-                    _cashToken,
-                    INDEX_ID,
-                    actualCashAmount,
-                    new bytes(0) // placeholder ctx
-                ),
-                new bytes(0) // user data
-            );
-
-            
+        // if not successful, bail
+        if (!success) {
         }
+            // decode the data
+            // uint256 price = abi.decode(data, uint256); */
 
-        
+        (uint256 actualCashAmount, ) = _ida.calculateDistribution(
+            _cashToken,
+            address(this), 
+            INDEX_ID,
+            cashAmount
+        );
+
+        _cashToken.transferFrom(owner(), address(this), actualCashAmount);
+
+        _host.callAgreement(
+            _ida,
+            abi.encodeWithSelector(
+                _ida.distribute.selector,
+                _cashToken,
+                INDEX_ID,
+                actualCashAmount,
+                new bytes(0) // placeholder ctx
+            ),
+            new bytes(0) // user data
+        );
     }
 
+
+        /// @dev Distribute `amount` of cash among all token holders
+    function distributeDAI(uint256 cashAmount) external onlyOwner {
+        (uint256 actualCashAmount, ) = _ida.calculateDistribution(
+            _cashToken,
+            address(this), 
+            INDEX_ID,
+            cashAmount
+        );
+
+        _cashToken.transferFrom(owner(), address(this), actualCashAmount);
+
+        _host.callAgreement(
+            _ida,
+            abi.encodeWithSelector(
+                _ida.distribute.selector,
+                _cashToken,
+                INDEX_ID,
+                actualCashAmount,
+                new bytes(0) // placeholder ctx
+            ),
+            new bytes(0) // user data
+        );
+    }
+
+    function test(uint256 cashAmount) external view returns (uint256 actualCashAmount) {
+        (actualCashAmount, ) = _ida.calculateDistribution(
+            _cashToken,
+            address(this), 
+            INDEX_ID,
+            cashAmount
+        );
+    }
+
+    function test1(uint256 cashAmount) external {
+        (uint256 actualCashAmount, ) = _ida.calculateDistribution(
+            _cashToken,
+            address(this), 
+            INDEX_ID,
+            cashAmount
+        );
+
+        _cashToken.transferFrom(owner(), address(this), actualCashAmount);
+    }
+
+    function test2() external {
+
+        _cashToken.transferFrom(owner(), address(this), 1);
+
+    }
+
+    function test3() external {
+
+        _host.callAgreement(
+            _ida,
+            abi.encodeWithSelector(
+                _ida.distribute.selector,
+                _cashToken,
+                INDEX_ID,
+                1,
+                new bytes(0) // placeholder ctx
+            ),
+            new bytes(0) // user data
+        );
+
+    }
+
+
     /// @dev ERC20._transfer override
-    function _transfer(address sender, address recipient, uint256 amount) internal override {
+    function _transfer(
+        address sender,
+        address recipient,
+        uint256 amount
+    ) internal override {
         uint128 senderUnits = uint128(ERC20.balanceOf(sender));
         uint128 recipientUnits = uint128(ERC20.balanceOf(recipient));
         // first try to do ERC20 transfer
@@ -152,5 +217,4 @@ contract MusicInvestToken is
             new bytes(0) // user data
         );
     }
-
 }
