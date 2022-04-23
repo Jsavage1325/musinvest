@@ -7,7 +7,6 @@
 /data
 *.ignore.*
 .DS_Store
-
+.history/
 *.env
-
 .vscode/
