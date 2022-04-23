@@ -105,7 +105,6 @@ module.exports = {
     },
 
     kovan: {
-
       provider: () => new HDWalletProvider(
           "slight recycle stairs caution cereal chuckle list bulk jelly snake donate cable",
           "https://kovan.infura.io/v3/dd072c9e29824ccf93bea07c71ee2697",

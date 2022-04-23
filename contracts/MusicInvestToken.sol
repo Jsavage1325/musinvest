@@ -36,8 +36,10 @@ contract MusicInvestToken is
         string memory symbol,
         ISuperToken cashToken,
         ISuperfluid host,
-        IInstantDistributionAgreementV1 ida)
-        ERC20(name, symbol)
+        IInstantDistributionAgreementV1 ida
+        )
+        
+    ERC20(name, symbol)
     {
         _cashToken = cashToken;
         _host = host;
@@ -85,7 +87,6 @@ contract MusicInvestToken is
         // here we want to send a request to the oracle
         bytes32 thing = "true";
     
-
         (bool success, bytes memory data) =  umaOracle.call(abi.encodeWithSignature("requestPrice(bytes32,uint256)", thing, block.timestamp));
 
         if (success) {
