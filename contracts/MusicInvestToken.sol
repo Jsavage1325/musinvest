@@ -55,7 +55,7 @@ contract MusicInvestToken is Ownable, ERC20 {
         _decimals = 0;
     }
 
-    /// @dev Issue new `amount` of giths to `beneficiary`
+    // Issue new shares to beneficiary
     function issue(address beneficiary, uint256 amount) external onlyOwner {
         // then adjust beneficiary subscription units
         uint256 currentAmount = balanceOf(beneficiary);
@@ -65,7 +65,7 @@ contract MusicInvestToken is Ownable, ERC20 {
 
         _host.callAgreement(
             _ida,
-            abi.encodeWithSelector_cashToken(
+            abi.encodeWithSelector(
                 _ida.updateSubscription.selector,
                 _cashToken,
                 INDEX_ID,

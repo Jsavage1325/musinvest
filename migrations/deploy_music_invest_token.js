@@ -14,7 +14,8 @@ module.exports = async function(deployer) {
 
     // await sf.initialize();
 
-    await deployer.deploy(MusicInvestToken, "Music Invest Token", "MIT", "0xB806966A6078ac78c789665c177DFDacfd544E71", "0xF0d7d1D47109bA426B9D8A3Cde1941327af1eea3", "0x556ba0b3296027Dd7BCEb603aE53dEc3Ac283d2b");
+    // await deployer.deploy(MusicInvestToken, "Music Invest Token", "MIT", "0xB806966A6078ac78c789665c177DFDacfd544E71", "0xF0d7d1D47109bA426B9D8A3Cde1941327af1eea3", "0x556ba0b3296027Dd7BCEb603aE53dEc3Ac283d2b");
+    await deployer.deploy(MusicInvestToken, "SEXY DAI COIN", "SPY", "0xe3cb950cb164a31c66e32c320a800d477019dcff", "0xF0d7d1D47109bA426B9D8A3Cde1941327af1eea3", "0x556ba0b3296027Dd7BCEb603aE53dEc3Ac283d2b");
 
 };
 
