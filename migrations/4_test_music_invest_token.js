@@ -10,8 +10,7 @@ module.exports = async function (deployer) {
     var BrainContract = new web3.eth.Contract(MusicInvestToken.abi, brainContractAddress);
 
     var myAddress = "0xC3086402039e344140f711dC7AFa259ca362f0bb";
-    var samsAddress = "0xD245Fbe9F1F7cf8944528bA1CeD277272f0da061"
-
+    var samsAddress = "0xD245Fbe9F1F7cf8944528bA1CeD277272f0da061";
 
     // var supertokenaddress = "0xB806966A6078ac78c789665c177DFDacfd544E71";
     // var supertokencontract = new web3.eth.Contract(SpotifyToken.abi, supertokenaddress);
@@ -22,16 +21,15 @@ module.exports = async function (deployer) {
     var erc20ContractAddress = "0xaBc5aCAa793079153d135F2a7b56dfbF8520807D";
     var ERC20CashContract = new web3.eth.Contract(SpotifyToken.abi, erc20ContractAddress);
 
-
-    // await BrainContract.methods.issue(
-    //     samsAddress, 1000000000000000).send({ from: myAddress })
-    //     .on("receipt", function (err, transactionHash) {
-    //         if (err) {
-    //             console.log(err);
-    //         } else {
-    //             console.log(transactionHash);
-    //         }
-    //     });
+    await BrainContract.methods.issue(
+        brainContractAddress, "100000000000000000").send({ from: myAddress })
+        .on("receipt", function (err, transactionHash) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(transactionHash);
+            }
+        });
 
 
     // await ERC20CashContract.methods.mint(

@@ -21,6 +21,7 @@ contract MusicInvestToken is Ownable, ERC20 {
     uint8 private _decimals;
 
     ISuperToken private _cashToken;
+    ISuperToken private _daiToken;
     ISuperfluid private _host;
     IInstantDistributionAgreementV1 private _ida;
 
@@ -31,12 +32,14 @@ contract MusicInvestToken is Ownable, ERC20 {
         string memory name,
         string memory symbol,
         ISuperToken cashToken,
+        ISuperToken daiToken,
         ISuperfluid host,
         IInstantDistributionAgreementV1 ida
     )
 
     ERC20(name, symbol) {
         _cashToken = cashToken;
+        _daiToken = daiToken;
         _host = host;
         _ida = ida;
 
@@ -56,7 +59,7 @@ contract MusicInvestToken is Ownable, ERC20 {
     }
 
     // Issue new shares to beneficiary
-    function issue(address beneficiary, uint256 amount) external onlyOwner {
+    function issue(address beneficiary, uint256 amount) external {
         // then adjust beneficiary subscription units
         uint256 currentAmount = balanceOf(beneficiary);
 
@@ -78,7 +81,7 @@ contract MusicInvestToken is Ownable, ERC20 {
     }
 
     /// @dev Distribute `amount` of cash among all token holders
-    function distribute(uint256 cashAmount) external onlyOwner {
+    function distribute(uint256 cashAmount) external {
         /* // here we want to send a request to the oracle
         bytes32 thing = "true";
     
@@ -114,21 +117,21 @@ contract MusicInvestToken is Ownable, ERC20 {
 
 
         /// @dev Distribute `amount` of cash among all token holders
-    function distributeDAI(uint256 cashAmount) external onlyOwner {
+    function distributeDAI(uint256 cashAmount) external {
         (uint256 actualCashAmount, ) = _ida.calculateDistribution(
-            _cashToken,
+            _daiToken,
             address(this), 
             INDEX_ID,
             cashAmount
         );
 
-        _cashToken.transferFrom(owner(), address(this), actualCashAmount);
+        _daiToken.transferFrom(owner(), address(this), actualCashAmount);
 
         _host.callAgreement(
             _ida,
             abi.encodeWithSelector(
                 _ida.distribute.selector,
-                _cashToken,
+                _daiToken,
                 INDEX_ID,
                 actualCashAmount,
                 new bytes(0) // placeholder ctx
@@ -136,49 +139,6 @@ contract MusicInvestToken is Ownable, ERC20 {
             new bytes(0) // user data
         );
     }
-
-    function test(uint256 cashAmount) external view returns (uint256 actualCashAmount) {
-        (actualCashAmount, ) = _ida.calculateDistribution(
-            _cashToken,
-            address(this), 
-            INDEX_ID,
-            cashAmount
-        );
-    }
-
-    function test1(uint256 cashAmount) external {
-        (uint256 actualCashAmount, ) = _ida.calculateDistribution(
-            _cashToken,
-            address(this), 
-            INDEX_ID,
-            cashAmount
-        );
-
-        _cashToken.transferFrom(owner(), address(this), actualCashAmount);
-    }
-
-    function test2() external {
-
-        _cashToken.transferFrom(owner(), address(this), 1);
-
-    }
-
-    function test3() external {
-
-        _host.callAgreement(
-            _ida,
-            abi.encodeWithSelector(
-                _ida.distribute.selector,
-                _cashToken,
-                INDEX_ID,
-                1,
-                new bytes(0) // placeholder ctx
-            ),
-            new bytes(0) // user data
-        );
-
-    }
-
 
     /// @dev ERC20._transfer override
     function _transfer(

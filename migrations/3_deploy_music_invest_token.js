@@ -1,8 +1,5 @@
-const { web3tx } = require("@decentral.ee/web3-helpers");
-const { setWeb3Provider } = require("@decentral.ee/web3-helpers/src/config");
 const SuperfluidSDK = require("@superfluid-finance/js-sdk");
 const MusicInvestToken = artifacts.require("MusicInvestToken");
-const { Web3Provider } = require("@ethersproject/providers");
 
 module.exports = async function(deployer) {
 
@@ -14,8 +11,12 @@ module.exports = async function(deployer) {
 
     // await sf.initialize();
 
-    // await deployer.deploy(MusicInvestToken, "Music Invest Token", "MIT", "0xB806966A6078ac78c789665c177DFDacfd544E71", "0xF0d7d1D47109bA426B9D8A3Cde1941327af1eea3", "0x556ba0b3296027Dd7BCEb603aE53dEc3Ac283d2b");
-    await deployer.deploy(MusicInvestToken, "SEXY DAI COIN", "SPY", "0xe3cb950cb164a31c66e32c320a800d477019dcff", "0xF0d7d1D47109bA426B9D8A3Cde1941327af1eea3", "0x556ba0b3296027Dd7BCEb603aE53dEc3Ac283d2b");
+    const superSpotifyToken = "0xB806966A6078ac78c789665c177DFDacfd544E71";
+    const SuperFakeDAIToken = "0xe3cb950cb164a31c66e32c320a800d477019dcff";
+    const HostAddress = "0xF0d7d1D47109bA426B9D8A3Cde1941327af1eea3";
+    const IDAAddress = "0x556ba0b3296027Dd7BCEb603aE53dEc3Ac283d2b";
+
+    await deployer.deploy(MusicInvestToken, "Partoken", "PRT", superSpotifyToken, SuperFakeDAIToken, HostAddress, IDAAddress);
 
 };
 
