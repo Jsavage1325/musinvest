@@ -1,1 +1,0 @@
-const MusicInvestToken = artifacts.require("MusicInvestToken");

@@ -1,1 +1,0 @@
-const SpotifyToken = artifacts.require("MusicInvestToken");

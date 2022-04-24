@@ -1,1 +1,0 @@
-const Spo = artifacts.require("MusicInvestToken");
